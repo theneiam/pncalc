@@ -1,7 +1,9 @@
 <?php
 
 /**
+ * Prefix (Polish) notation calculator
  *
+ * @author Eugene Nezhuta <eugene.nezhuta@gmail.com>
  */
 
 namespace Calcs;
@@ -9,15 +11,24 @@ namespace Calcs;
 class PrefixNotation
 {
     /**
+     * Stack to store operands and operators
+     *
      * @var null|\SplStack
      */
     protected $stack = null;
 
     /**
+     * List of operations calculator can handle
+     *
      * @var array
      */
     protected $operations = [];
 
+    /**
+     * Init stack, load built-in operations
+     *
+     * @see PrefixNotation::loadBuiltInOperations
+     */
     public function __construct()
     {
         $this->stack = new \SplStack();
@@ -33,6 +44,17 @@ class PrefixNotation
     public function addOperation($name, $implementation)
     {
         $this->operations[$name] = $implementation;
+    }
+
+    /**
+     * Tests the ability of the calc to perform particular operation
+     *
+     * @param string $operationName
+     * @return bool
+     */
+    public function can($operationName)
+    {
+        return isset($this->operations[$operationName]);
     }
 
     /**
@@ -67,9 +89,14 @@ class PrefixNotation
      */
     public function calculate($expression)
     {
-        $expression = explode(' ', $this->filterExpression($expression));
-        for ($i = (count($expression) - 1); $i >= 0; $i--) {
-            $char = $expression[$i];
+        // at first filter expression from unneeded symbols, etc...
+        $filteredExpression = $this->filterExpression($expression);
+        // explode expression to an array using space as a delimiter
+        $explodedExpression = explode(' ', $filteredExpression);
+        $expressionLength = count($explodedExpression);
+
+        for ($i = ($expressionLength - 1); $i >= 0; $i--) {
+            $char = $explodedExpression[$i];
             if (isset($this->operations[$char])) {
                 $operand1 = $this->stack->pop();
                 $operand2 = $this->stack->pop();
