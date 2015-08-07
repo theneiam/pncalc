@@ -1,0 +1,21 @@
+{
+    "name": "theneiam/pncalc",
+    "description": "Prefix (Polish) notation calculator",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Eugene Nezhuta",
+            "email": "theneiam@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "require-dev": {
+        "phpunit/phpunit": "4.7.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "Calcs": "src/"
+        }
+    }
+}
